@@ -151,9 +151,7 @@ bool rgb_matrix_indicators_user(void) {
   }
   if (keyboard_config.disable_layer_led) { return false; }
   
-  // Update the caps lock indicator on every frame
-  caps_indicator_update();
-  
+  // First apply the layer colors
   switch (biton32(layer_state)) {
     case 0:
       set_layer_color(0);
@@ -178,6 +176,10 @@ bool rgb_matrix_indicators_user(void) {
       rgb_matrix_set_color_all(0, 0, 0);
     break;
   }
+  
+  // Update the caps lock indicator AFTER setting layer colors
+  // This ensures our caps lock indicator takes precedence over the layer colors
+  caps_indicator_update();
   return true;
 }
 
