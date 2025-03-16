@@ -1,5 +1,7 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "features/caps_indicator.h"
+#include "features/caps_indicator.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #define ML_SAFE_RANGE SAFE_RANGE
 
@@ -108,6 +110,7 @@ extern rgb_config_t rgb_matrix_config;
 
 void keyboard_post_init_user(void) {
   rgb_matrix_enable();
+  caps_indicator_init();
 }
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
@@ -147,6 +150,10 @@ bool rgb_matrix_indicators_user(void) {
       return false;
   }
   if (keyboard_config.disable_layer_led) { return false; }
+  
+  // Update the caps lock indicator on every frame
+  caps_indicator_update();
+  
   switch (biton32(layer_state)) {
     case 0:
       set_layer_color(0);
@@ -175,8 +182,12 @@ bool rgb_matrix_indicators_user(void) {
 }
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-  switch (keycode) {
+  // Check if caps lock key is pressed and handle it with our caps indicator
+  if (!caps_indicator_process_record(keycode, record)) {
+      return false;
+  }
 
+  switch (keycode) {
     case RGB_SLD:
       if (record->event.pressed) {
         rgblight_mode(1);
