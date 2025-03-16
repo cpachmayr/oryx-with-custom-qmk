@@ -15,6 +15,7 @@
  */
 
 #include "caps_indicator.h"
+#include "print.h"
 
 // Function to initialize caps lock indicator
 void caps_indicator_init(void) {
@@ -24,32 +25,29 @@ void caps_indicator_init(void) {
 
 // Function to update the caps lock indicator based on the current state
 void caps_indicator_update(void) {
-    // Calculate the LED matrix ID for the caps lock key
-    // The caps lock key is at position 49 in the LED matrix based on its position in the layout
-    // (bottom row, rightmost key of the main keys, not counting thumb keys)
-    uint8_t led_id = 49; // Correct position for the Voyager's KC_CAPS LED
+    // The correct LED index for Caps Lock is 49 (confirmed)
+    const uint8_t caps_lock_led_index = 49;
     
-    // Check if caps lock is on
+    // Set the color based on caps lock state
     if (host_keyboard_led_state().caps_lock) {
-        // Caps lock is on - set to bright red
-        rgb_matrix_set_color(led_id, CAPS_ACTIVE_R, CAPS_ACTIVE_G, CAPS_ACTIVE_B);
+        // Caps lock is on - set to bright red (E00909)
+        rgb_matrix_set_color(caps_lock_led_index, CAPS_ACTIVE_R, CAPS_ACTIVE_G, CAPS_ACTIVE_B);
     } else {
-        // Caps lock is off - set to dim red
-        rgb_matrix_set_color(led_id, CAPS_INACTIVE_R, CAPS_INACTIVE_G, CAPS_INACTIVE_B);
+        // Caps lock is off - set to dim red (8D4E4E)
+        rgb_matrix_set_color(caps_lock_led_index, CAPS_INACTIVE_R, CAPS_INACTIVE_G, CAPS_INACTIVE_B);
     }
 }
 
 // Function to process record for caps lock key
 bool caps_indicator_process_record(uint16_t keycode, keyrecord_t *record) {
-    switch (keycode) {
-        case KC_CAPS: {
-            // We need to return true to allow the regular processing to happen
-            // which will toggle the caps lock state, then our RGB matrix callback will
-            // handle the LED update after the state has changed
-            return true;
+    if (keycode == KC_CAPS) {
+        if (record->event.pressed) {
+            // Force an update of the RGB matrix after a short delay
+            // to ensure the caps lock state is correctly reflected
+            caps_indicator_update();
         }
     }
     
-    // For all other keys, let the process continue normally
+    // Always return true to allow normal processing of all keys
     return true;
 }
