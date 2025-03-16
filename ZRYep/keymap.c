@@ -1,7 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
 #include "features/caps_indicator.h"
-#include "features/caps_indicator.h"
 #define MOON_LED_LEVEL LED_LEVEL
 #define ML_SAFE_RANGE SAFE_RANGE
 
@@ -10,6 +9,8 @@ enum custom_keycodes {
   HSV_0_255_255,
   HSV_74_255_255,
   HSV_169_255_255,
+  MAC_DND,
+  MAC_LOCK,
 };
 
 
@@ -56,7 +57,7 @@ enum tap_dance_codes {
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   [0] = LAYOUT_voyager(
-    KC_ESCAPE,      TD(DANCE_0),    TD(DANCE_1),    TD(DANCE_2),    TD(DANCE_3),    TD(DANCE_4),                                    TD(DANCE_5),    TD(DANCE_6),    TD(DANCE_7),    TD(DANCE_8),    TD(DANCE_9),    KC_MINUS,       
+    KC_ESCAPE,      TD(DANCE_0),    TD(DANCE_1),    TD(DANCE_2),    TD(DANCE_3),    TD(DANCE_4),                                    TD(DANCE_5),    TD(DANCE_6),    TD(DANCE_7),    TD(DANCE_8),    TD(DANCE_9),    OSL(5),         
     KC_GRAVE,       KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_BSLS,        
     KC_MINUS,       MT(MOD_LSFT, KC_A),MT(MOD_LALT, KC_S),MT(MOD_LCTL, KC_D),MT(MOD_LGUI, KC_F),KC_G,                                           KC_H,           MT(MOD_RGUI, KC_J),MT(MOD_RCTL, KC_K),MT(MOD_RALT, KC_L),MT(MOD_RSFT, KC_SCLN),TD(DANCE_10),   
     CW_TOGG,        MT(MOD_LSFT, KC_Z),KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RSFT, KC_SLASH),KC_CAPS,        
@@ -91,6 +92,13 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                     TD(DANCE_33),   TD(DANCE_34),                                   KC_TRANSPARENT, KC_TRANSPARENT
   ),
   [5] = LAYOUT_voyager(
+    RALT(RGUI(KC_ESCAPE)),KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
+    KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, 
+    MAC_DND,        KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, KC_TRANSPARENT, MAC_LOCK,       
+                                                    KC_TRANSPARENT, KC_TRANSPARENT,                                 KC_TRANSPARENT, KC_TRANSPARENT
+  ),
+  [6] = LAYOUT_voyager(
     KC_ESCAPE,      KC_Q,           KC_W,           KC_E,           KC_R,           KC_T,                                           KC_Y,           KC_U,           KC_I,           KC_O,           KC_P,           KC_UP,          
     KC_MINUS,       MT(MOD_LSFT, KC_A),MT(MOD_LALT, KC_S),MT(MOD_LCTL, KC_D),MT(MOD_LGUI, KC_F),ALL_T(KC_G),                                    KC_H,           MT(MOD_RGUI, KC_J),MT(MOD_RCTL, KC_K),MT(MOD_RALT, KC_L),MT(MOD_RSFT, KC_SCLN),KC_QUOTE,       
     KC_LEFT_SHIFT,  MT(MOD_LSFT, KC_Z),KC_X,           KC_C,           KC_V,           KC_B,                                           KC_N,           KC_M,           KC_COMMA,       KC_DOT,         MT(MOD_RSFT, KC_SLASH),KC_RIGHT_SHIFT, 
@@ -114,7 +122,7 @@ void keyboard_post_init_user(void) {
 }
 
 const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
-    [0] = { {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {129,10,76}, {127,194,148}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {74,255,255}, {41,255,255}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {4,255,255}, {0,156,181}, {131,255,255} },
+    [0] = { {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {129,10,76}, {127,194,148}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {74,255,255}, {41,255,255}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {129,10,76}, {0,244,224}, {0,156,181}, {131,255,255} },
 
     [1] = { {0,0,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255}, {131,255,255} },
 
@@ -124,7 +132,9 @@ const uint8_t PROGMEM ledmap[][RGB_MATRIX_LED_COUNT][3] = {
 
     [4] = { {0,0,255}, {0,0,0}, {0,0,0}, {0,0,0}, {137,6,186}, {0,0,255}, {137,6,186}, {137,6,186}, {137,6,186}, {0,110,242}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {137,6,186}, {0,110,242}, {99,94,242}, {137,6,186}, {0,0,0}, {0,0,0}, {0,0,0}, {0,255,255}, {86,255,255}, {172,255,255}, {0,138,217}, {0,138,217}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {199,251,139}, {137,6,186}, {23,242,242}, {137,6,186}, {0,0,0}, {0,0,0}, {199,251,139}, {23,242,242}, {23,242,242}, {23,242,242}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0} },
 
-    [5] = { {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {74,255,255}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {131,255,255}, {20,140,181}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84} },
+    [5] = { {23,255,248}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {139,218,201}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,0,0}, {0,255,255}, {0,0,0}, {0,0,0} },
+
+    [6] = { {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {74,255,255}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {0,0,255}, {0,0,255}, {0,0,255}, {0,0,255}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {131,255,255}, {20,140,181}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84}, {169,255,84} },
 
 };
 
@@ -171,6 +181,9 @@ bool rgb_matrix_indicators_user(void) {
     case 5:
       set_layer_color(5);
       break;
+    case 6:
+      set_layer_color(6);
+      break;
    default:
     if (rgb_matrix_get_flags() == LED_FLAG_NONE)
       rgb_matrix_set_color_all(0, 0, 0);
@@ -186,6 +199,16 @@ bool rgb_matrix_indicators_user(void) {
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
   // Check if caps lock key is pressed and handle it with our caps indicator
   if (!caps_indicator_process_record(keycode, record)) {
+      return false;
+  }
+
+  // Handle MAC specific keys
+  switch (keycode) {
+    case MAC_DND:
+      HSS(0x9B);
+      return false;
+    case MAC_LOCK:
+      HCS(0x19E);
       return false;
   }
 
